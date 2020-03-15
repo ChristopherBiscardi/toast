@@ -2,5 +2,19 @@
   "name": "toast",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "husky": ">=4",
+    "lint-staged": ">=10",
+    "prettier": "^1.19.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,css}": "prettier --write",
+    "*.{md}": "prettier --write --prose-wrap always"
+  }
 }

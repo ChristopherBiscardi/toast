@@ -15,6 +15,6 @@
   },
   "lint-staged": {
     "*.{js,css}": "prettier --write",
-    "*.{md}": "prettier --write --prose-wrap always"
+    "*.md": "prettier --write --prose-wrap always"
   }
 }

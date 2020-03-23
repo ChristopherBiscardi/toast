@@ -1,0 +1,55 @@
+{
+  "name": "@sector/toast",
+  "description": "The best place to Stack your JAM",
+  "version": "0.0.1",
+  "author": "Christopher Biscardi (@chrisbiscardi)",
+  "bin": {
+    "toast": "./bin/run"
+  },
+  "bugs": "https://github.com/ChristopherBiscardi/toast/issues",
+  "dependencies": {
+    "@oclif/command": "^1",
+    "@oclif/config": "^1",
+    "@oclif/plugin-help": "^2",
+    "babel-plugin-preval": "^4.0.0",
+    "babel-plugin-transform-inline-environment-variables": "^0.4.3",
+    "chokidar": "^3.3.1",
+    "es-module-lexer": "^0.3.17",
+    "honeycomb-beeline": "^2.0.2",
+    "module-alias": "^2.2.2",
+    "react-helmet": "^6.0.0-beta.2"
+  },
+  "devDependencies": {
+    "@oclif/dev-cli": "^1",
+    "globby": "^10"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "files": [
+    "/bin",
+    "/npm-shrinkwrap.json",
+    "/oclif.manifest.json",
+    "/src"
+  ],
+  "homepage": "https://github.com/ChristopherBiscardi/toast",
+  "keywords": [
+    "oclif"
+  ],
+  "license": "MIT",
+  "main": "src/index.js",
+  "oclif": {
+    "commands": "./src/commands",
+    "bin": "toast",
+    "plugins": [
+      "@oclif/plugin-help"
+    ]
+  },
+  "repository": "ChristopherBiscardi/toast",
+  "scripts": {
+    "postpack": "rm -f oclif.manifest.json",
+    "prepack": "oclif-dev manifest && oclif-dev readme",
+    "test": "echo NO TESTS",
+    "version": "oclif-dev readme && git add README.md"
+  }
+}

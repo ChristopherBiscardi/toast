@@ -1,8 +1,14 @@
 {
-  "name": "toast",
+  "name": "toast-workspace",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "docs",
+    "vendor/snowpack/pkg"
+  ],
   "devDependencies": {
     "husky": ">=4",
     "lint-staged": ">=10",

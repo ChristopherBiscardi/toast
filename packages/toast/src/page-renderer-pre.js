@@ -51,7 +51,9 @@ async function renderPage() {
     { render, h }
   ] = await Promise.all(promises);
   const Page = PageModule.default;
-  pageWrapper = PageWrapperModule ? PageWrapperModule.default : undefined;
+  if(PageWrapperModule) {
+    pageWrapper = PageWrapperModule.default
+  }
 
   render(
     h(pageWrapper, pageData, h(Page, pageData)),

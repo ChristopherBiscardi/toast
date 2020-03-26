@@ -32,6 +32,13 @@ class BakeCommand extends Command {
     const publicDir = path.resolve(siteDir, "public");
 
     const pageWrapperPath = path.resolve(cacheDir, "src/page-wrapper");
+    // require user's page wrapper component
+    let pageWrapper;
+    try {
+      pageWrapper = require(pageWrapperPath).default;
+    } catch (e) {
+      this.log("no user pagewrapper supplied");
+    }
     const browserPageWrapperPath = "/src/page-wrapper.js";
     const pages = require(path.resolve(cacheDir, "pages.json"));
     beeline.addContext({ numPages: pages.length });
@@ -99,8 +106,6 @@ class BakeCommand extends Command {
           } catch (e) {
             // data path doesn't exist. Some things won't have data, it's fine.
           }
-          // require user's page wrapper component
-          const pageWrapper = require(pageWrapperPath).default;
 
           // write HTML file out for page
           const htmlFilePath = path.resolve(
@@ -127,8 +132,6 @@ class BakeCommand extends Command {
         }
       )
     );
-
-    const pageWrapper = require(pageWrapperPath).default;
 
     // render pages from pages.json
     await Promise.all(
@@ -172,7 +175,7 @@ class BakeCommand extends Command {
       .then(() =>
         fs.copyFile(
           path.resolve(
-            path.dirname(path.dirname(require.resolve("toast"))),
+            path.dirname(path.dirname(require.resolve("@sector/toast"))),
             "static/toast/page-renderer.js"
           ),
           path.resolve(publicDir, "toast/page-renderer.js")

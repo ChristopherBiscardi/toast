@@ -4,6 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "release": "changeset publish"
+  },
   "workspaces": [
     "packages/*",
     "docs",

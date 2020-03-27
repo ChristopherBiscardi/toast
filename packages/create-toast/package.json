@@ -2,5 +2,6 @@
   "name": "create-toast",
   "version": "0.0.1",
   "main": "index.js",
+  "access": "public",
   "license": "MIT"
 }

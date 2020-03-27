@@ -4,6 +4,7 @@
   "main": "index.js",
   "author": "christopherbiscardi <chris@christopherbiscardi.com> (@chrisbiscardi)",
   "license": "MIT",
+  "private": true,
   "scripts": {
     "prepare": "snowpack --dest public/web_modules",
     "snowpack": "snowpack --dest public/web_modules"

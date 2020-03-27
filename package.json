@@ -22,5 +22,8 @@
   "lint-staged": {
     "*.{js,css}": "prettier --write",
     "*.md": "prettier --write --prose-wrap always"
+  },
+  "dependencies": {
+    "@changesets/cli": "^2.6.1"
   }
 }

@@ -6,6 +6,7 @@ The best place to Stack your JAM
 
 <!-- toc -->
 
+- [toast](#toast)
 - [Usage](#usage)
 - [Commands](#commands)
   <!-- tocstop -->
@@ -15,11 +16,11 @@ The best place to Stack your JAM
 <!-- usage -->
 
 ```sh-session
-$ npm install -g toast
+$ npm install -g @sector/toast
 $ toast COMMAND
 running command...
 $ toast (-v|--version|version)
-toast/0.0.1 darwin-x64 node-v11.15.0
+@sector/toast/0.0.1 darwin-x64 node-v11.15.0
 $ toast --help [COMMAND]
 USAGE
   $ toast COMMAND
@@ -32,27 +33,42 @@ USAGE
 
 <!-- commands -->
 
-- [`toast hello`](#toast-hello)
+- [`toast bake`](#toast-bake)
+- [`toast chai`](#toast-chai)
 - [`toast help [COMMAND]`](#toast-help-command)
+- [`toast incremental`](#toast-incremental)
+- [`toast shake`](#toast-shake)
 
-## `toast hello`
+## `toast bake`
 
-Describe the command here
+Bake your application
 
 ```
 USAGE
-  $ toast hello
-
-OPTIONS
-  -n, --name=name  name to print
+  $ toast bake
 
 DESCRIPTION
-  ...
-  Extra documentation goes here
+  * Don't bundle
+  * Render HTML
 ```
 
 _See code:
-[src/commands/hello.js](https://github.com/ChristopherBiscardi/toast/blob/v0.0.1/src/commands/hello.js)_
+[src/commands/bake.js](https://github.com/ChristopherBiscardi/toast/blob/v0.0.1/src/commands/bake.js)_
+
+## `toast chai`
+
+Brew some chai and get developing.
+
+```
+USAGE
+  $ toast chai
+
+DESCRIPTION
+  * watches files, does stuff
+```
+
+_See code:
+[src/commands/chai.js](https://github.com/ChristopherBiscardi/toast/blob/v0.0.1/src/commands/chai.js)_
 
 ## `toast help [COMMAND]`
 
@@ -71,5 +87,37 @@ OPTIONS
 
 _See code:
 [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.2.3/src/commands/help.ts)_
+
+## `toast incremental`
+
+Incremental your application
+
+```
+USAGE
+  $ toast incremental
+
+DESCRIPTION
+  * Don't bundle
+  * Render HTML
+```
+
+_See code:
+[src/commands/incremental.js](https://github.com/ChristopherBiscardi/toast/blob/v0.0.1/src/commands/incremental.js)_
+
+## `toast shake`
+
+The part before the bake.
+
+```
+USAGE
+  $ toast shake
+
+DESCRIPTION
+  * Fetch data
+  * Prepare dependencies (run snowpack)
+```
+
+_See code:
+[src/commands/shake.js](https://github.com/ChristopherBiscardi/toast/blob/v0.0.1/src/commands/shake.js)_
 
 <!-- commandsstop -->

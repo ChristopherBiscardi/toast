@@ -6,7 +6,9 @@
   "bin": {
     "toast": "./bin/run"
   },
-  "access": "public",
+  "publishConfig": {
+    "access": "public"
+  },
   "bugs": "https://github.com/ChristopherBiscardi/toast/issues",
   "dependencies": {
     "@babel/core": "^7.9.0",

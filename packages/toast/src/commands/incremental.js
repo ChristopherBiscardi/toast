@@ -164,8 +164,16 @@ class IncrementalCommand extends Command {
           .then(() =>
             fs.writeFile(nodeComponentPath, nodeComponent.code, "utf-8")
           );
-        // do additional processing for src/pages
-        if (filepath.startsWith("src/pages")) {
+
+        return { filepath, nodeComponentPath, browserComponentPath };
+      })
+    );
+
+    // do additional processing for src/pages
+    await Promise.all(
+      files
+        .filter(({ filepath }) => filepath.startsWith("src/pages"))
+        .map(({ filepath, nodeComponentPath, browserComponentPath }) => {
           // read in page data json file if it exists
           const dataPath = path.resolve(publicDir, `${filepath}on`);
           let data = {};
@@ -177,7 +185,7 @@ class IncrementalCommand extends Command {
           }
 
           // write html out for page
-          await render({
+          return render({
             component: require(nodeComponentPath).default,
             pageWrapper,
             data,
@@ -199,9 +207,7 @@ class IncrementalCommand extends Command {
             );
             return fs.writeFile(htmlFilePath, html);
           });
-        }
-        return { filepath, nodeComponentPath, browserComponentPath };
-      })
+        })
     );
 
     // copy page-renderer client into public/

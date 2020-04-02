@@ -1,7 +1,7 @@
 {
   "name": "@sector/toast",
   "description": "The best place to Stack your JAM",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": "Christopher Biscardi (@chrisbiscardi)",
   "bin": {
     "toast": "./bin/run"

@@ -41,7 +41,8 @@
     "/bin",
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json",
-    "/src"
+    "/src",
+    "/static"
   ],
   "homepage": "https://github.com/ChristopherBiscardi/toast",
   "keywords": [

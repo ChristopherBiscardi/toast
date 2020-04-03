@@ -1,5 +1,11 @@
 # @sector/toast
 
+## 0.2.2
+
+### Patch Changes
+
+- 6e724d8: remove references to old packagename
+
 ## 0.2.1
 
 ### Patch Changes

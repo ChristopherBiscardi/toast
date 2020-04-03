@@ -1,5 +1,11 @@
 # @sector/toast
 
+## 0.2.1
+
+### Patch Changes
+
+- d1c72fc: Takeover the toast package name
+
 ## 0.0.4
 
 ### Patch Changes

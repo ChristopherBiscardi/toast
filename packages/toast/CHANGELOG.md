@@ -1,5 +1,11 @@
 # @sector/toast
 
+## 0.2.3
+
+### Patch Changes
+
+- 7a9179d: only glob for files with extensions
+
 ## 0.2.2
 
 ### Patch Changes

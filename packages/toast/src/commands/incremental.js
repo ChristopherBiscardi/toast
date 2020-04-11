@@ -38,11 +38,6 @@ class IncrementalCommand extends Command {
     const pageWrapperPath = path.resolve(cacheDir, "src/page-wrapper");
     // require user's page wrapper component
     let pageWrapper;
-    try {
-      pageWrapper = require(pageWrapperPath).default;
-    } catch (e) {
-      this.log("no user pagewrapper supplied");
-    }
     const browserPageWrapperPath = "/src/page-wrapper.js";
     // const PageWrapper = require("./.cache/page-wrapper");
 
@@ -90,6 +85,11 @@ class IncrementalCommand extends Command {
         )
       ]);
 
+      try {
+        pageWrapper = require(pageWrapperPath).default;
+      } catch (e) {
+        this.log("no user pagewrapper supplied");
+      }
       return render({
         component: require(nodeComponentPath).default,
         pageWrapper,
@@ -185,6 +185,11 @@ class IncrementalCommand extends Command {
           }
 
           // write html out for page
+          try {
+            pageWrapper = require(pageWrapperPath).default;
+          } catch (e) {
+            this.log("no user pagewrapper supplied");
+          }
           return render({
             component: require(nodeComponentPath).default,
             pageWrapper,

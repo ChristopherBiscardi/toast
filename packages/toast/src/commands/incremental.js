@@ -223,7 +223,7 @@ class IncrementalCommand extends Command {
         )
       );
 
-    const staticFiles = await globby(["static/**/*"]);
+    const staticFiles = await globby(["static/**/*.*"]);
     beeline.addContext({ numStaticFiles: staticFiles.length });
     await Promise.all(
       staticFiles.map(async filepath => {

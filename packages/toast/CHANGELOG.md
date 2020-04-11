@@ -1,5 +1,11 @@
 # @sector/toast
 
+## 0.2.4
+
+### Patch Changes
+
+- c69206d: Require pageWrapper when it's actually required
+
 ## 0.2.3
 
 ### Patch Changes

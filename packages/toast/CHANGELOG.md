@@ -1,4 +1,4 @@
-# @sector/toast
+# toast
 
 ## 0.2.5
 

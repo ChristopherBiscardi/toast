@@ -1,5 +1,12 @@
 # @sector/toast
 
+## 0.2.5
+
+### Patch Changes
+
+- df2b7ed: Temporarily re-order src/\*_/_.js files to be handled before any rendering
+  happens
+
 ## 0.2.4
 
 ### Patch Changes

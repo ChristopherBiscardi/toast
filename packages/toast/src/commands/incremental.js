@@ -51,6 +51,41 @@ class IncrementalCommand extends Command {
     }
     beeline.addContext({ lifecycles: Object.keys(toast) });
 
+    const srcFiles = await globby(["src/**/*.js"]);
+    beeline.addContext({ numSrcFiles: srcFiles.length });
+    const files = await Promise.all(
+      srcFiles.map(async filepath => {
+        const fullFilePath = path.resolve(siteDir, filepath);
+        const fileContents = await fs.readFile(fullFilePath, "utf-8");
+        const browserComponent = await transformComponentForBrowser(
+          fileContents
+        );
+        const browserComponentPath = path.resolve(publicDir, filepath);
+        // make sure directory to put file in exists
+        // then put file there
+        await fs
+          .mkdir(path.dirname(browserComponentPath), { recursive: true })
+          .then(() =>
+            fs.writeFile(browserComponentPath, browserComponent.code, "utf-8")
+          );
+
+        const nodeComponent = await transformComponentForNode(fileContents);
+        const nodeComponentPath = path.resolve(cacheDir, filepath);
+        await fs
+          .mkdir(path.dirname(nodeComponentPath), { recursive: true })
+          .then(() =>
+            fs.writeFile(nodeComponentPath, nodeComponent.code, "utf-8")
+          );
+
+        return { filepath, nodeComponentPath, browserComponentPath };
+      })
+    );
+    try {
+      pageWrapper = require(pageWrapperPath).default;
+    } catch (e) {
+      this.log("no user pagewrapper supplied");
+    }
+
     const createPage = async ({
       // actual code string
       module: mod,
@@ -85,11 +120,6 @@ class IncrementalCommand extends Command {
         )
       ]);
 
-      try {
-        pageWrapper = require(pageWrapperPath).default;
-      } catch (e) {
-        this.log("no user pagewrapper supplied");
-      }
       return render({
         component: require(nodeComponentPath).default,
         pageWrapper,
@@ -139,36 +169,6 @@ class IncrementalCommand extends Command {
       await toast.prepData({ cacheDir, publicDir });
     }
 
-    const srcFiles = await globby(["src/**/*.js"]);
-    beeline.addContext({ numSrcFiles: srcFiles.length });
-    const files = await Promise.all(
-      srcFiles.map(async filepath => {
-        const fullFilePath = path.resolve(siteDir, filepath);
-        const fileContents = await fs.readFile(fullFilePath, "utf-8");
-        const browserComponent = await transformComponentForBrowser(
-          fileContents
-        );
-        const browserComponentPath = path.resolve(publicDir, filepath);
-        // make sure directory to put file in exists
-        // then put file there
-        await fs
-          .mkdir(path.dirname(browserComponentPath), { recursive: true })
-          .then(() =>
-            fs.writeFile(browserComponentPath, browserComponent.code, "utf-8")
-          );
-
-        const nodeComponent = await transformComponentForNode(fileContents);
-        const nodeComponentPath = path.resolve(cacheDir, filepath);
-        await fs
-          .mkdir(path.dirname(nodeComponentPath), { recursive: true })
-          .then(() =>
-            fs.writeFile(nodeComponentPath, nodeComponent.code, "utf-8")
-          );
-
-        return { filepath, nodeComponentPath, browserComponentPath };
-      })
-    );
-
     // do additional processing for src/pages
     await Promise.all(
       files
@@ -185,11 +185,7 @@ class IncrementalCommand extends Command {
           }
 
           // write html out for page
-          try {
-            pageWrapper = require(pageWrapperPath).default;
-          } catch (e) {
-            this.log("no user pagewrapper supplied");
-          }
+
           return render({
             component: require(nodeComponentPath).default,
             pageWrapper,

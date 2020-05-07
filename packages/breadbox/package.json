@@ -1,6 +1,6 @@
 {
   "name": "@sector/breadbox",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Pre-bundle npm modules for ESM use in the browser",
   "author": "Chris Biscardi <chris@christopherbiscardi.com",
   "license": "MIT",
@@ -19,14 +19,11 @@
     "version": "npm run build",
     "test": "npm run test:integration",
     "test:integration": "jest test/integration/runner.js --test-timeout=15000 --testMatch \"**/test/**/*.[jt]s?(x)\" -i"
-    },
+  },
   "@pika/pack": {
     "pipeline": [
       [
         "@pika/plugin-ts-standard-pkg"
-      ],
-      [
-        "@pika/plugin-copy-assets"
       ],
       [
         "@pika/plugin-build-node"
@@ -82,10 +79,8 @@
     "yargs-parser": "^16.1.0"
   },
   "devDependencies": {
-   
     "@pika/pack": "^0.5.0",
     "@pika/plugin-build-node": "^0.9.1",
-    "@pika/plugin-copy-assets": "^0.9.1",
     "@pika/plugin-simple-bin": "^0.9.1",
     "@pika/plugin-ts-standard-pkg": "^0.9.1",
     "@types/babel__traverse": "^7.0.7",

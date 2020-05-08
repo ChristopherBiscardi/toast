@@ -1,15 +1,19 @@
-import babel from '@babel/core';
-import chalk from 'chalk';
-import nodePath from 'path';
-import fs from 'fs';
-import glob from 'glob';
-import mime from 'mime-types';
-import validatePackageName from 'validate-npm-package-name';
-import {init as initESModuleLexer, parse, ImportSpecifier} from 'es-module-lexer';
-import {isTruthy} from './util';
-import {DevScripts, SnowpackConfig} from './config';
+import babel from "@babel/core";
+import chalk from "chalk";
+import nodePath from "path";
+import fs from "fs";
+import glob from "glob";
+import mime from "mime-types";
+import validatePackageName from "validate-npm-package-name";
+import {
+  init as initESModuleLexer,
+  parse,
+  ImportSpecifier,
+} from "es-module-lexer";
+import { isTruthy } from "./util";
+import { DevScripts, SnowpackConfig } from "./config";
 
-const WEB_MODULES_TOKEN = 'web_modules/';
+const WEB_MODULES_TOKEN = "web_modules/";
 const WEB_MODULES_TOKEN_LENGTH = WEB_MODULES_TOKEN.length;
 
 // [@\w] - Match a word-character or @ (valid package name)
@@ -36,7 +40,7 @@ export type InstallTarget = {
 };
 
 function stripJsExtension(dep: string): string {
-  return dep.replace(/\.m?js$/i, '');
+  return dep.replace(/\.m?js$/i, "");
 }
 
 function createInstallTarget(specifier: string, all = true): InstallTarget {
@@ -50,7 +54,7 @@ function createInstallTarget(specifier: string, all = true): InstallTarget {
 }
 
 function removeSpecifierQueryString(specifier: string) {
-  const queryStringIndex = specifier.indexOf('?');
+  const queryStringIndex = specifier.indexOf("?");
   if (queryStringIndex >= 0) {
     specifier = specifier.substring(0, queryStringIndex);
   }
@@ -94,17 +98,26 @@ function parseWebModuleSpecifier(specifier: string | null): null | string {
 
   // Check if this matches `@scope/package.js` or `package.js` format.
   // If it is, assume that this is a top-level pcakage that should be installed without the “.js”
-  const resolvedSpecifier = cleanedSpecifier.substring(webModulesIndex + WEB_MODULES_TOKEN_LENGTH);
+  const resolvedSpecifier = cleanedSpecifier.substring(
+    webModulesIndex + WEB_MODULES_TOKEN_LENGTH
+  );
   const resolvedSpecifierWithoutExtension = stripJsExtension(resolvedSpecifier);
-  if (validatePackageName(resolvedSpecifierWithoutExtension).validForNewPackages) {
+  if (
+    validatePackageName(resolvedSpecifierWithoutExtension).validForNewPackages
+  ) {
     return resolvedSpecifierWithoutExtension;
   }
   // Otherwise, this is an explicit import to a file within a package.
   return resolvedSpecifier;
 }
 
-function parseImportStatement(code: string, imp: ImportSpecifier): null | InstallTarget {
-  const webModuleSpecifier = parseWebModuleSpecifier(getWebModuleSpecifierFromCode(code, imp));
+function parseImportStatement(
+  code: string,
+  imp: ImportSpecifier
+): null | InstallTarget {
+  const webModuleSpecifier = parseWebModuleSpecifier(
+    getWebModuleSpecifierFromCode(code, imp)
+  );
   if (!webModuleSpecifier) {
     return null;
   }
@@ -115,10 +128,14 @@ function parseImportStatement(code: string, imp: ImportSpecifier): null | Instal
   }
 
   const dynamicImport = imp.d > -1;
-  const defaultImport = !dynamicImport && DEFAULT_IMPORT_REGEX.test(importStatement);
-  const namespaceImport = !dynamicImport && importStatement.includes('*');
+  const defaultImport =
+    !dynamicImport && DEFAULT_IMPORT_REGEX.test(importStatement);
+  const namespaceImport = !dynamicImport && importStatement.includes("*");
 
-  const namedImports = (importStatement.match(HAS_NAMED_IMPORTS_REGEX)! || [, ''])[1]
+  const namedImports = (importStatement.match(HAS_NAMED_IMPORTS_REGEX)! || [
+    ,
+    "",
+  ])[1]
     .split(SPLIT_NAMED_IMPORTS_REGEX)
     .map((name) => name.trim())
     .filter(isTruthy);
@@ -146,8 +163,11 @@ export function scanDepList(depList: string[], cwd: string): InstallTarget[] {
       if (!glob.hasMagic(whitelistItem)) {
         return [createInstallTarget(whitelistItem, true)];
       } else {
-        const nodeModulesLoc = nodePath.join(cwd, 'node_modules');
-        return scanDepList(glob.sync(whitelistItem, {cwd: nodeModulesLoc, nodir: true}), cwd);
+        const nodeModulesLoc = nodePath.join(cwd, "node_modules");
+        return scanDepList(
+          glob.sync(whitelistItem, { cwd: nodeModulesLoc, nodir: true }),
+          cwd
+        );
       }
     })
     .reduce((flat, item) => flat.concat(item), []);
@@ -155,20 +175,20 @@ export function scanDepList(depList: string[], cwd: string): InstallTarget[] {
 
 export async function scanImports(
   cwd: string,
-  {scripts, exclude}: SnowpackConfig,
+  { scripts, exclude }: SnowpackConfig
 ): Promise<InstallTarget[]> {
   await initESModuleLexer;
   const includeFileSets = await Promise.all(
     Object.entries(scripts).map(([id, scriptConfig]) => {
-      if (!id.startsWith('mount:')) {
+      if (!id.startsWith("mount:")) {
         return [];
       }
       const cmdArr = scriptConfig.cmd.split(/\s+/);
-      if (cmdArr[0] !== 'mount') {
+      if (cmdArr[0] !== "mount") {
         throw new Error(`script[${id}] must use the mount command`);
       }
       cmdArr.shift();
-      if (cmdArr[0].includes('web_modules')) {
+      if (cmdArr[0].includes("web_modules")) {
         return [];
       }
       const dirDisk = nodePath.resolve(cwd, cmdArr[0]);
@@ -178,9 +198,11 @@ export async function scanImports(
         absolute: true,
         nodir: true,
       });
-    }),
+    })
   );
-  const includeFiles = Array.from(new Set(([] as string[]).concat.apply([], includeFileSets)));
+  const includeFiles = Array.from(
+    new Set(([] as string[]).concat.apply([], includeFileSets))
+  );
   if (includeFiles.length === 0) {
     console.warn(`[ERROR]: No mouned files.`);
     return [];
@@ -191,31 +213,34 @@ export async function scanImports(
     includeFiles.map(async (filePath) => {
       const ext = nodePath.extname(filePath);
       // Always ignore dotfiles
-      if (filePath.startsWith('.')) {
+      if (filePath.startsWith(".")) {
         return null;
       }
       // Probably a license, a README, etc
-      if (ext === '') {
+      if (ext === "") {
         return null;
       }
       // Our import scanner can handle normal JS & even TypeScript without a problem.
-      if (ext === '.js' || ext === '.mjs' || ext === '.ts') {
-        return fs.promises.readFile(filePath, 'utf-8');
+      if (ext === ".mjs" || ext === ".ts") {
+        return fs.promises.readFile(filePath, "utf-8");
       }
       // JSX breaks our import scanner, so we need to transform it before sending it to our scanner.
-      if (ext === '.jsx' || ext === '.tsx') {
+      if (ext === ".js" || ext === ".jsx" || ext === ".tsx") {
         const result = await babel.transformFileAsync(filePath, {
           plugins: [
-            [require('@babel/plugin-transform-react-jsx'), {runtime: 'classic'}],
-            [require('@babel/plugin-syntax-typescript'), {isTSX: true}],
+            [
+              require("@babel/plugin-transform-react-jsx"),
+              { runtime: "classic" },
+            ],
+            [require("@babel/plugin-syntax-typescript"), { isTSX: true }],
           ],
           babelrc: false,
           configFile: false,
         });
         return result && result.code;
       }
-      if (ext === '.vue' || ext === '.svelte') {
-        const result = await fs.promises.readFile(filePath, 'utf-8');
+      if (ext === ".vue" || ext === ".svelte") {
+        const result = await fs.promises.readFile(filePath, "utf-8");
         // TODO: Replace with matchAll once Node v10 is out of TLS.
         // const allMatches = [...result.matchAll(HTML_JS_REGEX)];
         const allMatches: string[] = [];
@@ -223,16 +248,21 @@ export async function scanImports(
         while ((match = HTML_JS_REGEX.exec(result))) {
           allMatches.push(match);
         }
-        return allMatches.map((full, code) => code).join('\n');
+        return allMatches.map((full, code) => code).join("\n");
       }
       // If we don't recognize the file type, it could be source. Warn just in case.
       if (!mime.lookup(nodePath.extname(filePath))) {
         console.warn(
-          chalk.dim(`ignoring unsupported file "${nodePath.relative(process.cwd(), filePath)}"`),
+          chalk.dim(
+            `ignoring unsupported file "${nodePath.relative(
+              process.cwd(),
+              filePath
+            )}"`
+          )
         );
       }
       return null;
-    }),
+    })
   );
   return (loadedFiles as string[])
     .filter((code) => !!code)

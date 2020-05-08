@@ -1,5 +1,11 @@
 # toast
 
+## 0.2.6
+
+### Patch Changes
+
+- 8f87f57: switch to sector/babel plugin
+
 ## 0.2.5
 
 ### Patch Changes

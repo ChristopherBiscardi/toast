@@ -1,5 +1,11 @@
 # toast
 
+## 0.2.7
+
+### Patch Changes
+
+- d232208: fix import in bake temporarily
+
 ## 0.2.6
 
 ### Patch Changes

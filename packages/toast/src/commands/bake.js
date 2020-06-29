@@ -175,7 +175,7 @@ class BakeCommand extends Command {
       .then(() =>
         fs.copyFile(
           path.resolve(
-            path.dirname(path.dirname(require.resolve("@sector/toast"))),
+            path.dirname(path.dirname(require.resolve("toast"))),
             "static/toast/page-renderer.js"
           ),
           path.resolve(publicDir, "toast/page-renderer.js")

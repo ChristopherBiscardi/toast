@@ -1,5 +1,11 @@
 # toast
 
+## 0.2.8
+
+### Patch Changes
+
+- 111f4ab: Make a better error message when a toastfile isn't found (or is)
+
 ## 0.2.7
 
 ### Patch Changes

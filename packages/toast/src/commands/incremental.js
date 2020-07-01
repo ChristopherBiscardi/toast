@@ -5,12 +5,12 @@ const path = require("path");
 const globby = require("globby");
 const {
   transformComponentForBrowser,
-  transformComponentForNode
+  transformComponentForNode,
 } = require("../transforms");
 const { render } = require("../page-renderer-pre");
 const beeline = require("honeycomb-beeline")({
   writeKey: process.env.HONEYCOMB_WRITE_KEY || "no write key",
-  dataset: "serverless"
+  dataset: "serverless",
   // transmission: process.env.HONEYCOMB_TRANSMISSION  || null
 });
 
@@ -18,7 +18,7 @@ class IncrementalCommand extends Command {
   constructor(argv, config) {
     super(argv, config);
     this.trace = beeline.startTrace({
-      commandId: this.id
+      commandId: this.id,
     });
   }
   async finally(err) {
@@ -47,14 +47,22 @@ class IncrementalCommand extends Command {
     try {
       toast = require(toastFile);
     } catch (e) {
-      // no lifecycles defined
+      // if we didn't find toast.js, that's fine we don't technically need one
+      // and should still inform the user we didn't find one in case they
+      // were expecting one to be found.
+      if (e.code === "MODULE_NOT_FOUND" && e.message.endsWith("toast.js'")) {
+        console.log("No toast.js file detected");
+      } else {
+        // if the problem is anything else, throw it so the user knows
+        throw e;
+      }
     }
     beeline.addContext({ lifecycles: Object.keys(toast) });
 
     const srcFiles = await globby(["src/**/*.js"]);
     beeline.addContext({ numSrcFiles: srcFiles.length });
     const files = await Promise.all(
-      srcFiles.map(async filepath => {
+      srcFiles.map(async (filepath) => {
         const fullFilePath = path.resolve(siteDir, filepath);
         const fileContents = await fs.readFile(fullFilePath, "utf-8");
         const browserComponent = await transformComponentForBrowser(
@@ -92,7 +100,7 @@ class IncrementalCommand extends Command {
       // resulting page slug
       slug,
       // data to insert into the html page
-      data = {}
+      data = {},
     }) => {
       const browserComponentPath = path.resolve(publicDir, `${slug}.js`);
       const pageDataPath = path.resolve(publicDir, `${slug}.json`);
@@ -100,13 +108,13 @@ class IncrementalCommand extends Command {
       await Promise.all([
         fs.mkdir(path.dirname(browserComponentPath), { recursive: true }),
         fs.mkdir(path.dirname(pageDataPath), { recursive: true }),
-        fs.mkdir(path.dirname(nodeComponentPath), { recursive: true })
+        fs.mkdir(path.dirname(nodeComponentPath), { recursive: true }),
       ]);
 
       await Promise.all([
         // compile module and write out browserComponent to public/
         // browser-runnable JS, minus web module imports
-        transformComponentForBrowser(mod).then(browserComponent =>
+        transformComponentForBrowser(mod).then((browserComponent) =>
           fs.writeFile(browserComponentPath, browserComponent.code, "utf-8")
         ),
 
@@ -115,9 +123,9 @@ class IncrementalCommand extends Command {
 
         // compile module and write out node component to cache
         // node-requireable component
-        transformComponentForNode(mod).then(nodeComponent =>
+        transformComponentForNode(mod).then((nodeComponent) =>
           fs.writeFile(nodeComponentPath, nodeComponent.code, "utf-8")
-        )
+        ),
       ]);
 
       return render({
@@ -133,8 +141,8 @@ class IncrementalCommand extends Command {
           browserComponentPath.replace(
             path.resolve(process.cwd(), "public/"),
             ""
-          ) + "on"
-      }).then(html => {
+          ) + "on",
+      }).then((html) => {
         const htmlFilePath = path.resolve(publicDir, `${slug}.html`);
         return fs.writeFile(htmlFilePath, html);
       });
@@ -150,7 +158,7 @@ class IncrementalCommand extends Command {
         } else {
           this.log("fetching", namespace);
           // fetchPromise is where createPage calls happen in user/plugin land
-          return fetchPromise.then(data =>
+          return fetchPromise.then((data) =>
             // yes we're writing files, we should probably be writing individual
             // nodes to a database to approximate a production dynamo instance
             fs.writeFile(dataFile, JSON.stringify(data), "utf-8")
@@ -199,8 +207,8 @@ class IncrementalCommand extends Command {
               browserComponentPath.replace(
                 path.resolve(process.cwd(), "public/"),
                 ""
-              ) + "on"
-          }).then(html => {
+              ) + "on",
+          }).then((html) => {
             // write HTML file out for page
             const htmlFilePath = path.resolve(
               publicDir,
@@ -227,7 +235,7 @@ class IncrementalCommand extends Command {
     const staticFiles = await globby(["static/**/*.*"]);
     beeline.addContext({ numStaticFiles: staticFiles.length });
     await Promise.all(
-      staticFiles.map(async filepath => {
+      staticFiles.map(async (filepath) => {
         const destPath = filepath.replace("static/", "public/");
         await fs.mkdir(path.dirname(destPath), { recursive: true });
         await fs.copyFile(filepath, destPath);

@@ -68,6 +68,8 @@ renderPage();
 </html>
 `;
 
+const windowsLocalDevPathReplacement = /\\/g
+
 exports.render = async ({
   component,
   pageWrapper,
@@ -80,9 +82,9 @@ exports.render = async ({
   //   console.log(output);
   const helmet = Helmet.renderStatic();
   return htmlTemplate({
-    componentPath: browserComponentPath,
+    componentPath: browserComponentPath.replace(windowsLocalDevPathReplacement, "/"),
     pageWrapperPath: browserPageWrapperPath,
-    dataPath: Object.keys(data).length > 0 ? browserDataPath : undefined,
+    dataPath: Object.keys(data).length > 0 ? browserDataPath.replace(windowsLocalDevPathReplacement, "/") : undefined,
     appHtml: output,
     helmet
   });

@@ -1,5 +1,11 @@
 # toast
 
+## 0.2.9
+
+### Patch Changes
+
+- 09163cd: convert windows paths when using in the browser
+
 ## 0.2.8
 
 ### Patch Changes

@@ -10,7 +10,7 @@ const {
 const { render } = require("../page-renderer-pre");
 const beeline = require("honeycomb-beeline")({
   writeKey: process.env.HONEYCOMB_WRITE_KEY || "no write key",
-  dataset: "serverless",
+  dataset: process.env.HONEYCOMB_DATASET_NAME || "serverless",
   // transmission: process.env.HONEYCOMB_TRANSMISSION  || null
 });
 

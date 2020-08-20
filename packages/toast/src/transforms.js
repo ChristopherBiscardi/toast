@@ -2,8 +2,9 @@ const { transformAsync } = require("@babel/core");
 const path = require("path");
 // const WebdependenciesAliases = require("./babel/babel-plugin-webdependencies-aliases");
 
-module.exports.transformComponentForBrowser = (mod) =>
+module.exports.transformComponentForBrowser = (mod, filename) =>
   transformAsync(mod, {
+    filename,
     babelrc: false,
     presets: [`@babel/preset-react`],
     plugins: [
@@ -22,8 +23,9 @@ module.exports.transformComponentForBrowser = (mod) =>
     ],
   });
 
-module.exports.transformComponentForNode = (mod) =>
+module.exports.transformComponentForNode = (mod, filename) =>
   transformAsync(mod, {
+    filename,
     babelrc: false,
     presets: [
       [`@babel/preset-env`, { targets: { node: "current" } }],

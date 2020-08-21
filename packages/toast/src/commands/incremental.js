@@ -66,7 +66,8 @@ class IncrementalCommand extends Command {
         const fullFilePath = path.resolve(siteDir, filepath);
         const fileContents = await fs.readFile(fullFilePath, "utf-8");
         const browserComponent = await transformComponentForBrowser(
-          fileContents
+          fileContents,
+          fullFilePath
         );
         const browserComponentPath = path.resolve(publicDir, filepath);
         // make sure directory to put file in exists
@@ -77,7 +78,10 @@ class IncrementalCommand extends Command {
             fs.writeFile(browserComponentPath, browserComponent.code, "utf-8")
           );
 
-        const nodeComponent = await transformComponentForNode(fileContents);
+        const nodeComponent = await transformComponentForNode(
+          fileContents,
+          fullFilePath
+        );
         const nodeComponentPath = path.resolve(cacheDir, filepath);
         await fs
           .mkdir(path.dirname(nodeComponentPath), { recursive: true })

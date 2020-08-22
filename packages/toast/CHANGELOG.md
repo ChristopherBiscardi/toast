@@ -1,5 +1,11 @@
 # toast
 
+## 0.2.10
+
+### Patch Changes
+
+- dc4f6c9: Pass filename into babel; add globby as direct dep; make honeycomb dataset configurable;
+
 ## 0.2.9
 
 ### Patch Changes

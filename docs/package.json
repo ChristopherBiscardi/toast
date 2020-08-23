@@ -6,19 +6,26 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "prepare": "snowpack --dest public/web_modules",
-    "snowpack": "snowpack --dest public/web_modules"
+    "prepare": "breadbox --dest public/web_modules",
+    "breadbox": "breadbox --dest public/web_modules"
   },
   "dependencies": {
     "@mdx-js/mdx": "^1.5.7",
-    "@sector/toast": "*",
+    "toast": "*",
     "@sindresorhus/slugify": "^0.11.0",
-    "snowpack": "1.5.1"
+    "@sector/breadbox": "^0.0.4"
   },
   "snowpack": {
-    "aliases": {
-      "react": "preact/compat",
-      "@mdx-js/preact": "@mdx-js/preact"
-    }
+    "installOptions": {
+      "alias": {
+        "react": "preact/compat"
+      }
+    },
+    "knownEntrypoints": [
+      "preact",
+      "@mdx-js/preact",
+      "react-helmet",
+      "preact/compat"
+    ]
   }
 }

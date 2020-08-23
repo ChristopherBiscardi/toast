@@ -53,7 +53,7 @@ DESCRIPTION
 ```
 
 _See code:
-[src/commands/bake.js](https://github.com/ChristopherBiscardi/toast/blob/v0.0.1/src/commands/bake.js)_
+[src/commands/bake.js](./src/commands/bake.js)_
 
 ## `toast chai`
 
@@ -68,7 +68,7 @@ DESCRIPTION
 ```
 
 _See code:
-[src/commands/chai.js](https://github.com/ChristopherBiscardi/toast/blob/v0.0.1/src/commands/chai.js)_
+[src/commands/chai.js](./src/commands/chai.js)_
 
 ## `toast help [COMMAND]`
 
@@ -102,7 +102,7 @@ DESCRIPTION
 ```
 
 _See code:
-[src/commands/incremental.js](https://github.com/ChristopherBiscardi/toast/blob/v0.0.1/src/commands/incremental.js)_
+[src/commands/incremental.js](./src/commands/incremental.js)_
 
 ## `toast shake`
 
@@ -118,6 +118,6 @@ DESCRIPTION
 ```
 
 _See code:
-[src/commands/shake.js](https://github.com/ChristopherBiscardi/toast/blob/v0.0.1/src/commands/shake.js)_
+[src/commands/shake.js](./src/commands/shake.js)_
 
 <!-- commandsstop -->

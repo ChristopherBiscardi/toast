@@ -15,7 +15,7 @@ const htmlTemplate = ({
 }) => `<!DOCTYPE html>
 <script>
 window.componentPath = "${componentPath}";
-window.wrapperComponentPath = "${pageWrapperPath}";
+window.wrapperComponentPath = ${pageWrapperPath && `"${pageWrapperPath}"`};
 window.dataPath = ${dataPath && `"${dataPath}"`};
 </script>
 <html ${helmet.htmlAttributes.toString()}>
@@ -78,6 +78,9 @@ exports.render = async ({
   browserPageWrapperPath,
   browserDataPath
 }) => {
+  browserPageWrapperPath = pageWrapper ? browserPageWrapperPath : undefined;
+  pageWrapper = pageWrapper ? pageWrapper : ({children}) => h('div', null, children);
+  
   const output = render(h(pageWrapper, data, h(component, data)));
   //   console.log(output);
   const helmet = Helmet.renderStatic();

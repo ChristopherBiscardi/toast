@@ -48,7 +48,7 @@ JAMStack community, which often
 
 Tools like webpack are powerful and complex. There are meta-frameworks that
 choose to lean heavily into taking advantage of these tools, which adds more
-complexity on top. We feel that that end of the spectrum is well occupied and
+complexity on top. We feel that end of the spectrum is well occupied and
 seek to come at the problem of shipping JS performantly from the other
 perspective: Unbundled by default.
 

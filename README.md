@@ -18,7 +18,12 @@ You can read about the high level [vision](./VISION.md) or the current
 
 ##### What types of sites is Toast useful for?
 
-We don't know yet. It's mostly being used for blogs currently.
+We don't know yet. It's mostly being used for blogs currently. Here's a list of
+production sites.
+
+- [christopheribiscardi.com](https://www.christopherbiscardi.com)—[[source](https://github.com/ChristopherBiscardi/christopherbiscardi.github.com)]
+- [jason.af](https://www.jason.af/)—[[source](https://github.com/jlengstorf/jason.af)]
+- [lannonbr.com](https://lannonbr.com/)—[[source](https://github.com/lannonbr/Portfolio)]
 
 ##### What browsers does Toast support?
 

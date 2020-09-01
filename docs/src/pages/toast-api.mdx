@@ -1,0 +1,54 @@
+# toast.js API
+
+## sourceData
+
+async ({ withCache, createPage }) => Promise
+
+Method for sourcing data from local or remote sources.
+
+`withCache` provides an API to cache JSON data returned from the data sourcers into a cache directory. It takes a string for what to save the data as as well as an async function to fetch the data.
+
+```js
+exports.sourceData = async ({ withCache, createPage }) => {
+  return Promise.all([
+    withCache("mdx-posts", MDXPostsSource.sourceData({ createPage })),
+  ]);
+};
+```
+
+`createPage` is a function to generate new pages from data. It takes in `module`, the ES Module to render the page, `slug`, the URL slug for the page, and `data`, the page data passed in as props.
+
+```js
+await createPage({
+  module: `/** @jsx mdx */
+    import {mdx} from '@mdx-js/preact';
+    ${compiledMDX}`,
+  slug: meta.slug,
+  data: { ...meta },
+});
+```
+
+## prepData
+
+async ({ cacheDir, publicDir }) => Promise
+
+Function for preparing page data before rendering pages found in `src/pages/`. This can be used to pass data generated in `sourceData` to other JSON files that can be loaded in as page data.
+
+With such, if a page is located at `src/pages/index.js`, then it can be passed data through as React props by creating a JSON file at `public/src/pages/index.json` within `prepData`.
+
+```js
+exports.prepData = async ({ cacheDir, publicDir }) => {
+  const mdxPostsData = require(path.resolve(cacheDir, "mdx-posts.json"));
+
+  const allPostsData = mdxPostsData.map(({ title, date, slug, tags }) => ({
+    title,
+    slug,
+    updatedAt: date,
+  }));
+
+  await fs.writeFile(
+    path.resolve(publicDir, "src/pages/garden.json"),
+    JSON.stringify({ posts: allPostsData })
+  );
+};
+```

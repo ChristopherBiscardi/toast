@@ -6,7 +6,7 @@ const vm = require("vm");
 const {
   transformComponentForBrowser,
   transformComponentForNode
-} = require("@sector/toast/src/transforms");
+} = require("toast/src/transforms");
 
 exports.sourceData = async ({ createPage, ...options }) => {
   const files = await fs.readdir("./src/pages");

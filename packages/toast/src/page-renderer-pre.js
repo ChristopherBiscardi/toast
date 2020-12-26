@@ -24,6 +24,7 @@ window.dataPath = ${dataPath && `"${dataPath}"`};
   ${helmet.meta.toString()}
   ${helmet.link.toString()}
   ${helmet.noscript.toString()}
+  ${helmet.noscript.toString()}
   </head>
   <body ${helmet.bodyAttributes.toString()}>
     <div id="toast-page-section">${appHtml}</div>

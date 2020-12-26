@@ -1,9 +1,0 @@
-{
-  "description": "Test that webDependencies work without a node_modules directory",
-  "scripts": {
-    "TEST": "node ../../../pkg/dist-node/index.bin.js"
-  },
-  "webDependencies": {
-    "async": "3.1.0"
-  }
-}

@@ -1,9 +1,0 @@
-{
-  "description": "Test that the lockfile import URLs & version info are used",
-  "scripts": {
-    "TEST": "node ../../../pkg/dist-node/index.bin.js"
-  },
-  "webDependencies": {
-      "async": "3.1.0"
-  }
-}

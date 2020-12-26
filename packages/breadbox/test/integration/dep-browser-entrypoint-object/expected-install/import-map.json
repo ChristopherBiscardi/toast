@@ -1,5 +1,0 @@
-{
-  "imports": {
-    "mock-test-package": "./mock-test-package.js"
-  }
-}

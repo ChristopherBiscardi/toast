@@ -1,9 +1,0 @@
-{
-  "name": "create-toast",
-  "version": "0.0.2",
-  "main": "index.js",
-  "publishConfig": {
-    "access": "public"
-  },
-  "license": "MIT"
-}

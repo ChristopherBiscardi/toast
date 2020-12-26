@@ -1,8 +1,0 @@
-pkg
-www/index.md
-www/dist
-/node_modules
-/web_modules
-test/integration/*/web_modules
-.DS_Store
-.idea

@@ -1,6 +1,6 @@
-const { render } = require("preact-render-to-string");
-const { h } = require("preact");
-const { Helmet } = require("react-helmet");
+const { render } = require('preact-render-to-string');
+const { h } = require('preact');
+const { Helmet } = require('react-helmet');
 // const babel = require("@babel/core");
 // const vm = require("vm");
 // const { MDXProvider } = require("@mdx-js/preact");
@@ -11,7 +11,7 @@ const htmlTemplate = ({
   pageWrapperPath,
   dataPath,
   appHtml,
-  helmet
+  helmet,
 }) => `<!DOCTYPE html>
 <script>
 window.componentPath = "${componentPath}";
@@ -23,6 +23,7 @@ window.dataPath = ${dataPath && `"${dataPath}"`};
   ${helmet.title.toString()}
   ${helmet.meta.toString()}
   ${helmet.link.toString()}
+  ${helmet.noscript.toString()}
   </head>
   <body ${helmet.bodyAttributes.toString()}>
     <div id="toast-page-section">${appHtml}</div>
@@ -68,7 +69,7 @@ renderPage();
 </html>
 `;
 
-const windowsLocalDevPathReplacement = /\\/g
+const windowsLocalDevPathReplacement = /\\/g;
 
 exports.render = async ({
   component,
@@ -76,19 +77,27 @@ exports.render = async ({
   data = {},
   browserComponentPath,
   browserPageWrapperPath,
-  browserDataPath
+  browserDataPath,
 }) => {
   browserPageWrapperPath = pageWrapper ? browserPageWrapperPath : undefined;
-  pageWrapper = pageWrapper ? pageWrapper : ({children}) => h('div', null, children);
-  
+  pageWrapper = pageWrapper
+    ? pageWrapper
+    : ({ children }) => h('div', null, children);
+
   const output = render(h(pageWrapper, data, h(component, data)));
   //   console.log(output);
   const helmet = Helmet.renderStatic();
   return htmlTemplate({
-    componentPath: browserComponentPath.replace(windowsLocalDevPathReplacement, "/"),
+    componentPath: browserComponentPath.replace(
+      windowsLocalDevPathReplacement,
+      '/',
+    ),
     pageWrapperPath: browserPageWrapperPath,
-    dataPath: Object.keys(data).length > 0 ? browserDataPath.replace(windowsLocalDevPathReplacement, "/") : undefined,
+    dataPath:
+      Object.keys(data).length > 0
+        ? browserDataPath.replace(windowsLocalDevPathReplacement, '/')
+        : undefined,
     appHtml: output,
-    helmet
+    helmet,
   });
 };
